@@ -1,3 +1,5 @@
+import { NextPage } from "next";
+
 /* eslint-disable @next/next/no-img-element */
 const URL = "https://billions-api.nomadcoders.workers.dev/person";
 
@@ -30,8 +32,9 @@ const getPerson = (id: string): Promise<Person> => {
 	return fetch(`${URL}/${id}`).then((response) => response.json());
 };
 
-export default async function PersonDetailPage({ params }: { params: { id: string } }) {
-	const result = await getPerson(params.id);
+const PersonDetailPage: NextPage<{ params: Promise<{ id: string }> }> = async ({ params }) => {
+	const { id } = await params;
+	const result = await getPerson(id);
 	console.log(result);
 	return (
 		<div className="w-full m-auto my-10">
@@ -70,4 +73,6 @@ export default async function PersonDetailPage({ params }: { params: { id: strin
 			</div>
 		</div>
 	);
-}
+};
+
+export default PersonDetailPage;
